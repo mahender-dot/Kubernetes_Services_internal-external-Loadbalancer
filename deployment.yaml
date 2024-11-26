@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-deploy
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+    - key: ms
+      operator: In
+      values:
+      - deploy 
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      name: ms-deploy
+      namespace: default 
+      labels:
+        ms: deploy
+    spec:
+      containers:
+      - image: nginx
+        name: nginx-ct
+        ports:
+        - containerPort: 80
+    
+      
